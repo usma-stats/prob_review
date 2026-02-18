@@ -9,6 +9,11 @@ import random
 import time
 from dataclasses import dataclass, field
 from typing import Optional
+from pathlib import Path
+from datetime import datetime
+
+import gspread
+from google.oauth2.service_account import Credentials
 
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(page_title="MA206X Prob Drill", page_icon="🎯", layout="wide")
@@ -635,6 +640,35 @@ def build_questions():
 QUESTIONS = build_questions()
 
 
+# ── Google Sheets logging ─────────────────────────────────────────────────────
+
+def log_to_sheets(last_name, rank, display_name, xp, answered, correct, accuracy, best_streak):
+    """Append a progress row to the Google Sheet. Errors are silently ignored."""
+    try:
+        creds_path = Path(__file__).parent / "ma206x-drill-501207a5df09.json"
+        scopes = [
+            "https://www.googleapis.com/auth/spreadsheets",
+            "https://www.googleapis.com/auth/drive",
+        ]
+        creds = Credentials.from_service_account_file(str(creds_path), scopes=scopes)
+        gc = gspread.authorize(creds)
+        sh = gc.open_by_key("1haxIjQcFkV-q2345dLZwBlydCG8XpuW35PZDSAl9so0")
+        ws = sh.sheet1
+        ws.append_row([
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            last_name,
+            rank,
+            display_name,
+            xp,
+            answered,
+            correct,
+            f"{accuracy:.1f}%",
+            best_streak,
+        ])
+    except Exception:
+        pass
+
+
 # ── Session state initialization ─────────────────────────────────────────────
 
 def init_state():
@@ -657,6 +691,7 @@ def init_state():
         "start_time": time.time(),
         "q_order": [],
         "user_answer": None,
+        "last_name": "",
     }
     for k, v in defaults.items():
         if k not in st.session_state:
@@ -664,6 +699,20 @@ def init_state():
 
 
 init_state()
+
+# ── Name entry gate ───────────────────────────────────────────────────────────
+if not st.session_state.last_name:
+    st.markdown("## 🎯 MA206X Probability Drill")
+    st.markdown("**Enter your last name to begin.**")
+    with st.form("name_form"):
+        name_input = st.text_input("Last Name:")
+        if st.form_submit_button("Start Drilling", use_container_width=True):
+            if name_input.strip():
+                st.session_state.last_name = name_input.strip().title()
+                st.rerun()
+            else:
+                st.warning("Please enter your last name.")
+    st.stop()
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -830,7 +879,7 @@ with st.sidebar:
     # Level display
     level_name, level_min, level_next = get_level(st.session_state.xp)
     level_icon = LEVEL_ICONS.get(level_name, "🔰")
-    st.markdown(f"### {level_icon} {level_name}")
+    st.markdown(f"### {level_icon} {level_name} {st.session_state.last_name}")
     xp_in_level = st.session_state.xp - level_min
     xp_needed = level_next - level_min
     st.progress(min(xp_in_level / max(xp_needed, 1), 1.0),
@@ -904,7 +953,7 @@ top1, top2, top3 = st.columns([2, 1, 1])
 with top1:
     level_name, _, _ = get_level(st.session_state.xp)
     level_icon = LEVEL_ICONS.get(level_name, "🔰")
-    st.markdown(f"### {level_icon} {level_name} — {st.session_state.xp} XP")
+    st.markdown(f"### {level_icon} {level_name} {st.session_state.last_name} — {st.session_state.xp} XP")
 with top2:
     streak = st.session_state.streak
     fire = "🔥" * min(streak, 5) if streak > 0 else "—"
@@ -985,6 +1034,14 @@ if not st.session_state.show_result:
             award_xp(correct, st.session_state.first_try)
             st.session_state.answered_indices.append(q_idx)
             check_achievements()
+            _rank, _, _ = get_level(st.session_state.xp)
+            _acc = (st.session_state.total_correct / max(st.session_state.total_answered, 1)) * 100
+            log_to_sheets(
+                st.session_state.last_name, _rank,
+                f"{_rank} {st.session_state.last_name}",
+                st.session_state.xp, st.session_state.total_answered,
+                st.session_state.total_correct, _acc, st.session_state.best_streak,
+            )
             st.rerun()
 
     elif q["type"] == "mc":
@@ -1006,6 +1063,14 @@ if not st.session_state.show_result:
                 award_xp(correct, st.session_state.first_try)
                 st.session_state.answered_indices.append(q_idx)
                 check_achievements()
+                _rank, _, _ = get_level(st.session_state.xp)
+                _acc = (st.session_state.total_correct / max(st.session_state.total_answered, 1)) * 100
+                log_to_sheets(
+                    st.session_state.last_name, _rank,
+                    f"{_rank} {st.session_state.last_name}",
+                    st.session_state.xp, st.session_state.total_answered,
+                    st.session_state.total_correct, _acc, st.session_state.best_streak,
+                )
                 st.rerun()
 
     elif q["type"] == "num":
@@ -1034,6 +1099,14 @@ if not st.session_state.show_result:
                 award_xp(correct, st.session_state.first_try)
                 st.session_state.answered_indices.append(q_idx)
                 check_achievements()
+                _rank, _, _ = get_level(st.session_state.xp)
+                _acc = (st.session_state.total_correct / max(st.session_state.total_answered, 1)) * 100
+                log_to_sheets(
+                    st.session_state.last_name, _rank,
+                    f"{_rank} {st.session_state.last_name}",
+                    st.session_state.xp, st.session_state.total_answered,
+                    st.session_state.total_correct, _acc, st.session_state.best_streak,
+                )
                 st.rerun()
 
 # Built-in calculator
