@@ -152,7 +152,7 @@ def build_questions():
         "P(V∪I) = P(V) + P(I) − P(V∩I) = 280/500 + 200/500 − 90/500 = 390/500 = 0.78")
 
     num("Probability Basics",
-        "Using the same survey (280 video games, 200 instruments, 90 both, out of 500): Find the probability a student does neither.",
+        "A survey of 500 students found 280 play video games (V), 200 play instruments (I), and 90 do both. Find the probability a randomly selected student does neither activity, i.e. find P(V' ∩ I').",
         0.22, 0.005,
         "P(V'∩I') = 1 − P(V∪I) = 1 − 0.78 = 0.22")
 
@@ -173,7 +173,7 @@ def build_questions():
         "P(A'∩B') = 1 − P(A∪B) = 1 − 0.65 = 0.35. Or P(A')P(B') = 0.7·0.5 = 0.35.")
 
     mc("Probability Basics",
-       "500 students: 280 play video games, 200 play instruments, 90 do both. Are V and I independent?",
+       "A survey of 500 students found 280 play video games (V), 200 play instruments (I), and 90 do both. Are V and I independent? (Check whether P(V)·P(I) = P(V∩I).)",
        ["No, because P(V)P(I) = 0.224 ≠ P(V∩I) = 0.18",
         "Yes, because both events can occur simultaneously",
         "Yes, because P(V∩I) > 0",
@@ -185,17 +185,17 @@ def build_questions():
     # 2. CONDITIONAL PROB & BAYES (Lessons 7-8, section 2.4)
     # ═══════════════════════════════════════════════════════════════════════
     num("Conditional Prob & Bayes",
-        "A medical test: 2% have disease, sensitivity 95%, specificity 90%. Find P(positive test) using total probability.",
+        "A disease affects 2% of the population. A test has 95% sensitivity, i.e. P(+|disease) = 0.95, and 90% specificity, i.e. P(−|no disease) = 0.90. Find P(positive test) using the Law of Total Probability.",
         0.117, 0.002,
         "P(T) = P(T|D)P(D) + P(T|D')P(D') = 0.95·0.02 + 0.10·0.98 = 0.019 + 0.098 = 0.117")
 
     num("Conditional Prob & Bayes",
-        "Same medical test (2% disease, 95% sensitivity, 90% specificity). Given positive test, find P(disease) using Bayes' Rule.",
+        "A disease affects 2% of the population. A test has 95% sensitivity, i.e. P(+|disease) = 0.95, and 90% specificity, i.e. P(−|no disease) = 0.90. A person tests positive. Find P(disease | positive) using Bayes' Rule.",
         0.162, 0.005,
         "P(D|T) = P(T|D)P(D)/P(T) = (0.95·0.02)/0.117 = 0.019/0.117 ≈ 0.162")
 
     mc("Conditional Prob & Bayes",
-       "In the medical test problem (2% disease, 95% sensitivity, 90% specificity), why is P(D|+) only ~16%?",
+       "A disease affects 2% of the population. A test has 95% sensitivity, i.e. P(+|disease) = 0.95, and 90% specificity, i.e. P(−|no disease) = 0.90. Why is P(disease | positive) only about 16%?",
        ["Low base rate: most positives come from the large healthy population",
         "The test has poor sensitivity",
         "The test has poor specificity",
@@ -204,12 +204,12 @@ def build_questions():
        "Even with a good test, a rare disease means most positives are false positives from the 98% healthy group.")
 
     num("Conditional Prob & Bayes",
-        "Factory: Machine A produces 60% of items (3% defect rate), Machine B produces 40% (5% defect rate). Find P(defective).",
+        "A factory has two machines. Machine A produces 60% of items with a 3% defect rate, i.e. P(defective|A) = 0.03. Machine B produces 40% with a 5% defect rate, i.e. P(defective|B) = 0.05. An item is selected at random. Find P(defective).",
         0.038, 0.002,
         "P(D) = P(D|A)P(A) + P(D|B)P(B) = 0.03·0.60 + 0.05·0.40 = 0.018 + 0.020 = 0.038")
 
     num("Conditional Prob & Bayes",
-        "Same factory (A: 60%, 3% defect; B: 40%, 5% defect). Given defective, find P(came from B).",
+        "A factory has two machines. Machine A produces 60% of items with P(defective|A) = 0.03. Machine B produces 40% with P(defective|B) = 0.05. An item is selected at random and found to be defective. Find P(Machine B | defective) using Bayes' Rule.",
         0.526, 0.005,
         "P(B|D) = P(D|B)P(B)/P(D) = (0.05·0.40)/0.038 = 0.020/0.038 ≈ 0.526")
 
@@ -278,7 +278,7 @@ def build_questions():
        "P(n,r) = n!/(n-r)! while C(n,r) = n!/(r!(n-r)!). Since r! ≥ 1, P(n,r) ≥ C(n,r).")
 
     mc("Counting & Independence",
-       "A password has 3 digits (0-9) and 2 letters (A-Z). If repetition is allowed and order matters, how many passwords are possible?",
+       "A 5-character password must have exactly 3 digit positions (each 0-9) followed by 2 letter positions (each A-Z). If repetition is allowed, how many passwords are possible?",
        ["10³ × 26² = 676,000", "10² × 26³ = 1,757,600", "C(10,3) × C(26,2) = 39,000", "10 × 26 × 5! = 31,200"],
        "10³ × 26² = 676,000",
        "Each digit has 10 choices, each letter has 26 choices. With repetition: 10³ · 26² = 676,000.")
@@ -314,22 +314,22 @@ def build_questions():
         "")
 
     num("Discrete RVs & PMFs",
-        "With PMF P(X=x) = x²/14 for x = 1,2,3: Find E(X).",
+        "A discrete RV X has PMF P(X=x) = x²/14 for x = 1, 2, 3 (and 0 otherwise). Find E(X).",
         18/7, 0.01,
         "E(X) = 1·(1/14) + 2·(4/14) + 3·(9/14) = (1+8+27)/14 = 36/14 = 18/7 ≈ 2.571")
 
     num("Discrete RVs & PMFs",
-        "With PMF P(X=x) = x²/14 for x = 1,2,3: Find Var(X).",
+        "A discrete RV X has PMF P(X=x) = x²/14 for x = 1, 2, 3 (and 0 otherwise). Find Var(X). Hint: use Var(X) = E(X²) − [E(X)]².",
         19/49, 0.01,
         "E(X²) = 1·(1/14) + 4·(4/14) + 9·(9/14) = 98/14 = 7. Var = 7 − (18/7)² = 19/49 ≈ 0.388")
 
     num("Discrete RVs & PMFs",
-        "With PMF P(X=x) = x²/14 for x = 1,2,3: Find P(X ≥ 2).",
+        "A discrete RV X has PMF P(X=x) = x²/14 for x = 1, 2, 3 (and 0 otherwise). Find P(X ≥ 2).",
         13/14, 0.005,
         "P(X≥2) = P(X=2) + P(X=3) = 4/14 + 9/14 = 13/14 ≈ 0.929")
 
     num("Discrete RVs & PMFs",
-        "Carnival game costs $2. Draw a card: Ace wins $10, face card (J,Q,K) wins $3, otherwise $0. Find E(net profit).",
+        "A carnival game costs $2 to play. You draw one card from a standard 52-card deck. Ace wins $10, face card (J, Q, K) wins $3, any other card wins $0. Let X = net profit (winnings minus $2 cost). Find E(X).",
         -28/52, 0.02,
         "Net: Ace → $8 (prob 4/52), Face → $1 (prob 12/52), Other → −$2 (prob 36/52). E(X) = 8(4/52) + 1(12/52) + (−2)(36/52) = −28/52 ≈ −$0.54")
 
@@ -365,32 +365,32 @@ def build_questions():
         "E(X) = np = 15(0.25) = 3.75")
 
     num("Binomial Distribution",
-        "X ~ Bin(15, 0.25). Find the standard deviation of X.",
+        "A 15-question multiple-choice quiz has 4 options per question. A student guesses randomly, so X ~ Bin(15, 0.25). Find the standard deviation of X.",
         math.sqrt(15 * 0.25 * 0.75), 0.02,
         "σ = √(np(1−p)) = √(15·0.25·0.75) = √2.8125 ≈ 1.677")
 
     num("Binomial Distribution",
-        "X ~ Bin(15, 0.25). Find P(X = 5).",
+        "A student randomly guesses on a 15-question quiz with 4 options each, so X ~ Bin(15, 0.25). Find P(X = 5), the probability of exactly 5 correct.",
         math.comb(15, 5) * (0.25**5) * (0.75**10), 0.005,
         "P(X=5) = C(15,5)·(0.25)⁵·(0.75)¹⁰ = 3003·(0.25)⁵·(0.75)¹⁰ ≈ 0.165")
 
     num("Binomial Distribution",
-        "X ~ Bin(15, 0.25). Find P(X ≥ 2). Round to 3 decimal places.",
+        "A student randomly guesses on a 15-question quiz with 4 options each, so X ~ Bin(15, 0.25). Find P(X ≥ 2), the probability of getting at least 2 correct. Round to 3 decimal places.",
         1 - 0.75**15 - 15*0.25*0.75**14, 0.005,
         "P(X≥2) = 1 − P(X=0) − P(X=1) = 1 − (0.75)¹⁵ − 15·(0.25)·(0.75)¹⁴ ≈ 0.920")
 
     num("Binomial Distribution",
-        "X ~ Bin(20, 0.10). Find P(X = 2).",
+        "A batch of 20 light bulbs each independently has a 10% defect rate, so X ~ Bin(20, 0.10). Find P(X = 2), the probability exactly 2 are defective.",
         math.comb(20, 2) * (0.10**2) * (0.90**18), 0.005,
         "P(X=2) = C(20,2)·(0.10)²·(0.90)¹⁸ = 190·0.01·(0.90)¹⁸ ≈ 0.285")
 
     num("Binomial Distribution",
-        "X ~ Bin(20, 0.10). Find P(X = 0).",
+        "A batch of 20 light bulbs each independently has a 10% defect rate, so X ~ Bin(20, 0.10). Find P(X = 0), the probability none are defective.",
         0.90**20, 0.005,
         "P(X=0) = (0.90)²⁰ ≈ 0.122")
 
     num("Binomial Distribution",
-        "X ~ Bin(20, 0.10). Find Var(X).",
+        "A batch of 20 light bulbs each independently has a 10% defect rate, so X ~ Bin(20, 0.10). Find Var(X).",
         1.80, 0.01,
         "Var(X) = np(1−p) = 20·0.10·0.90 = 1.80")
 
@@ -404,32 +404,32 @@ def build_questions():
     # 6. POISSON DISTRIBUTION (Lesson 11, section 3.6)
     # ═══════════════════════════════════════════════════════════════════════
     num("Poisson Distribution",
-        "Bookstore gets 5 orders/hour. X ~ Pois(5). Find P(X = 3).",
+        "A bookstore receives an average of 5 online orders per hour. Let X = number of orders in one hour, so X ~ Pois(5). Find P(X = 3).",
         (math.exp(-5) * 5**3) / math.factorial(3), 0.005,
         "P(X=3) = e⁻⁵·5³/3! = 125e⁻⁵/6 ≈ 0.140")
 
     num("Poisson Distribution",
-        "X ~ Pois(5). Find P(X = 0).",
+        "A bookstore receives an average of 5 online orders per hour, so X ~ Pois(5). Find P(X = 0), the probability of no orders in one hour.",
         math.exp(-5), 0.001,
         "P(X=0) = e⁻⁵ ≈ 0.00674")
 
     num("Poisson Distribution",
-        "X ~ Pois(5). Find P(X ≥ 2).",
+        "A bookstore receives an average of 5 online orders per hour, so X ~ Pois(5). Find P(X ≥ 2), the probability of at least 2 orders in one hour.",
         1 - math.exp(-5) - 5*math.exp(-5), 0.005,
         "P(X≥2) = 1 − P(X=0) − P(X=1) = 1 − e⁻⁵ − 5e⁻⁵ = 1 − 6e⁻⁵ ≈ 0.960")
 
     num("Poisson Distribution",
-        "Bookstore: 5 orders/hour. What is P(exactly 8 orders in 2 hours)? (Rate scales to 10.)",
+        "A bookstore receives an average of 5 online orders per hour. What is P(exactly 8 orders in a 2-hour period)? Hint: the Poisson rate scales — use λ = 5 × 2 = 10 for the 2-hour window.",
         (math.exp(-10) * 10**8) / math.factorial(8), 0.005,
         "2-hour rate = 10. P(Y=8) = e⁻¹⁰·10⁸/8! ≈ 0.113")
 
     num("Poisson Distribution",
-        "City averages 3 power outages/month. Find P(exactly 5 in a month).",
+        "A city averages 3 power outages per month. Assume outages follow a Poisson process, so X ~ Pois(3). Find P(X = 5), the probability of exactly 5 outages in a given month.",
         (math.exp(-3) * 3**5) / math.factorial(5), 0.005,
         "X ~ Pois(3). P(X=5) = e⁻³·3⁵/5! = 243e⁻³/120 ≈ 0.101")
 
     num("Poisson Distribution",
-        "3 outages/month. Find P(no outages in 2 weeks). (2 weeks ≈ half a month → rate = 1.5)",
+        "A city averages 3 power outages per month (Poisson process). Find P(no outages in a 2-week period). Assume 1 month ≈ 4 weeks, so the 2-week rate is λ = 3/2 = 1.5.",
         math.exp(-1.5), 0.005,
         "Rate for 2 weeks = 1.5. P(Y=0) = e⁻¹·⁵ ≈ 0.223")
 
@@ -467,47 +467,47 @@ def build_questions():
        "This is the fundamental definition of probability for continuous RVs.")
 
     num("Continuous RVs & PDFs",
-        "f(x) = kx(1−x) for 0 ≤ x ≤ 1. Find k to make this a valid pdf.",
+        "A continuous RV X has pdf f(x) = kx(1−x) for 0 ≤ x ≤ 1 (and 0 otherwise). Find the value of k that makes this a valid pdf.",
         6.0, 0.01,
         "∫₀¹ kx(1−x)dx = k[x²/2 − x³/3]₀¹ = k(1/6) = 1, so k = 6.")
 
     num("Continuous RVs & PDFs",
-        "f(x) = 6x(1−x) for 0 ≤ x ≤ 1. Find P(0.25 ≤ X ≤ 0.75).",
+        "A continuous RV X has pdf f(x) = 6x(1−x) for 0 ≤ x ≤ 1 (and 0 otherwise). Find P(0.25 ≤ X ≤ 0.75).",
         0.6875, 0.005,
         "F(x) = 3x² − 2x³. F(0.75) − F(0.25) = 0.84375 − 0.15625 = 0.6875")
 
     num("Continuous RVs & PDFs",
-        "f(x) = 6x(1−x) for 0 ≤ x ≤ 1. Find E(X).",
+        "A continuous RV X has pdf f(x) = 6x(1−x) for 0 ≤ x ≤ 1 (and 0 otherwise). Find E(X).",
         0.5, 0.005,
         "E(X) = ∫₀¹ x·6x(1−x)dx = 6∫₀¹(x²−x³)dx = 6(1/3 − 1/4) = 6(1/12) = 1/2")
 
     num("Continuous RVs & PDFs",
-        "f(x) = 6x(1−x) for 0 ≤ x ≤ 1. Find Var(X).",
+        "A continuous RV X has pdf f(x) = 6x(1−x) for 0 ≤ x ≤ 1 (and 0 otherwise). Find Var(X). Hint: use Var(X) = E(X²) − [E(X)]².",
         0.05, 0.005,
         "E(X²) = 6(1/4 − 1/5) = 6(1/20) = 3/10. Var = 3/10 − (1/2)² = 0.30 − 0.25 = 0.05")
 
     num("Continuous RVs & PDFs",
-        "f(y) = (3/16)√y for 0 ≤ y ≤ 4. Find P(Y > 1).",
+        "A continuous RV Y has pdf f(y) = (3/16)√y for 0 ≤ y ≤ 4 (and 0 otherwise). Find P(Y > 1).",
         7/8, 0.005,
         "P(Y>1) = (3/16)·[2y^(3/2)/3] from 1 to 4 = (1/8)(8−1) = 7/8 = 0.875")
 
     num("Continuous RVs & PDFs",
-        "f(y) = (3/16)√y for 0 ≤ y ≤ 4. Find E(Y).",
+        "A continuous RV Y has pdf f(y) = (3/16)√y for 0 ≤ y ≤ 4 (and 0 otherwise). Find E(Y).",
         2.4, 0.01,
         "E(Y) = (3/16)∫₀⁴ y^(3/2) dy = (3/16)(2/5)(32) = 12/5 = 2.4")
 
     num("Continuous RVs & PDFs",
-        "CDF: F(x) = x²/9 for 0 ≤ x ≤ 3. Find P(1 ≤ X ≤ 2).",
+        "A continuous RV X has CDF F(x) = x²/9 for 0 ≤ x ≤ 3 (with F(x)=0 for x<0, F(x)=1 for x>3). Find P(1 ≤ X ≤ 2). Recall: P(a ≤ X ≤ b) = F(b) − F(a).",
         1/3, 0.005,
         "P(1≤X≤2) = F(2) − F(1) = 4/9 − 1/9 = 3/9 = 1/3")
 
     num("Continuous RVs & PDFs",
-        "CDF: F(x) = x²/9 for 0 ≤ x ≤ 3. Find the median of X.",
+        "A continuous RV X has CDF F(x) = x²/9 for 0 ≤ x ≤ 3. Find the median of X, i.e. solve F(m) = 0.5.",
         math.sqrt(4.5), 0.01,
         "F(m) = 0.5 → m²/9 = 0.5 → m = √4.5 ≈ 2.121")
 
     num("Continuous RVs & PDFs",
-        "CDF: F(x) = x²/9 for 0 ≤ x ≤ 3. Find E(X). [Hint: pdf = 2x/9]",
+        "A continuous RV X has CDF F(x) = x²/9 for 0 ≤ x ≤ 3. Find E(X). Hint: first find the pdf by differentiating: f(x) = F'(x) = 2x/9.",
         2.0, 0.01,
         "f(x) = 2x/9. E(X) = ∫₀³ x·(2x/9)dx = (2/9)·[x³/3]₀³ = (2/9)·9 = 2")
 
@@ -515,32 +515,32 @@ def build_questions():
     # 8. NORMAL DISTRIBUTION (Lesson 13, section 4.3)
     # ═══════════════════════════════════════════════════════════════════════
     num("Normal Distribution",
-        "Checkout time ~ N(8, 4) (μ=8, σ=2). Find P(X > 12).",
+        "The time (in minutes) to complete an online checkout is normally distributed with μ = 8 and σ = 2, i.e. X ~ N(μ=8, σ²=4). Find P(X > 12). Use the Z-table: Φ(2.0) = 0.9772.",
         0.0228, 0.005,
         "Z = (12−8)/2 = 2. P(X>12) = 1 − Φ(2) = 1 − 0.9772 = 0.0228")
 
     num("Normal Distribution",
-        "Checkout time ~ N(8, 4). Find P(5 < X < 11).",
+        "Online checkout time X is normally distributed with μ = 8 min and σ = 2 min. Find P(5 < X < 11). Use the Z-table: Φ(1.5) = 0.9332, Φ(−1.5) = 0.0668.",
         0.8664, 0.005,
         "P(5<X<11) = Φ(1.5) − Φ(−1.5) = 0.9332 − 0.0668 = 0.8664")
 
     num("Normal Distribution",
-        "Checkout time ~ N(8, 4). Find the time exceeded by only 5% of customers.",
+        "Online checkout time X is normally distributed with μ = 8 min and σ = 2 min. Find the checkout time exceeded by only 5% of customers, i.e. find x such that P(X > x) = 0.05. Use z₀.₉₅ = 1.645.",
         11.29, 0.05,
         "P(X > x) = 0.05 → z = 1.645. x = 8 + 1.645(2) = 11.29 minutes.")
 
     num("Normal Distribution",
-        "SAT math ~ N(520, 100²). What score is the 90th percentile?",
+        "SAT math scores are approximately normal with μ = 520 and σ = 100, i.e. X ~ N(520, 100²). What score corresponds to the 90th percentile? Use z₀.₉₀ = 1.282.",
         648.2, 1.0,
         "z₉₀ = 1.282. Score = 520 + 1.282(100) = 648.2")
 
     num("Normal Distribution",
-        "SAT math ~ N(520, 100²). Find P(400 < X < 650).",
+        "SAT math scores are approximately normal with μ = 520 and σ = 100. Find P(400 < X < 650). Use Φ(1.30) = 0.9032 and Φ(−1.20) = 0.1151.",
         0.7881, 0.01,
         "P = Φ(1.30) − Φ(−1.20) = 0.9032 − 0.1151 = 0.7881")
 
     num("Normal Distribution",
-        "SAT math ~ N(520, 100²). What is the minimum score for the top 2%?",
+        "SAT math scores are approximately normal with μ = 520 and σ = 100. A scholarship requires a score in the top 2%. What is the minimum qualifying score? Use z₀.₉₈ = 2.054.",
         725.4, 1.0,
         "z₉₈ = 2.054. Score = 520 + 2.054(100) = 725.4")
 
@@ -556,7 +556,7 @@ def build_questions():
        "The 68-95-99.7 rule: ~68% within ±1σ, ~95% within ±2σ, ~99.7% within ±3σ.")
 
     mc("Normal Distribution",
-       "Bag of flour ~ N(5.0, 0.01). Which distribution is this?",
+       "The weight of a bag of flour follows a N(5.0, 0.01) distribution. In the notation N(μ, σ²), what are μ and σ?",
        ["Normal with μ=5.0, σ=0.1",
         "Normal with μ=5.0, σ=0.01",
         "Exponential with λ=5.0",
@@ -578,27 +578,27 @@ def build_questions():
         "E(T) = 1/λ = 1/10 = 0.1 hours = 6 minutes")
 
     num("Exponential Distribution",
-        "T ~ Exp(10). Find P(T > 0.25), i.e., wait exceeds 15 min.",
+        "Customers arrive at a coffee shop at a rate of 10 per hour. Let T be the waiting time (in hours) between customers, so T ~ Exp(λ=10). Find P(T > 0.25), the probability the wait exceeds 15 minutes.",
         math.exp(-2.5), 0.005,
         "P(T > 0.25) = e^(−10·0.25) = e^(−2.5) ≈ 0.0821")
 
     num("Exponential Distribution",
-        "T ~ Exp(10). Find P(T ≤ 0.1), i.e., next customer within 6 min.",
+        "Customers arrive at a coffee shop at a rate of 10 per hour, so T ~ Exp(λ=10) in hours. Find P(T ≤ 0.1), the probability the next customer arrives within 6 minutes (0.1 hours).",
         1 - math.exp(-1), 0.005,
         "P(T ≤ 0.1) = 1 − e^(−10·0.1) = 1 − e⁻¹ ≈ 0.632")
 
     num("Exponential Distribution",
-        "T ~ Exp(10). Find the median wait time (in hours).",
+        "Customers arrive at a coffee shop at a rate of 10 per hour, so T ~ Exp(λ=10) in hours. Find the median wait time (in hours). Hint: set F(m) = 0.5 and solve for m.",
         math.log(2)/10, 0.002,
         "1 − e^(−10m) = 0.5 → m = ln(2)/10 ≈ 0.0693 hours ≈ 4.16 min")
 
     num("Exponential Distribution",
-        "Lightning: 6 strikes/week. T ~ Exp(6). Find P(T > 0.5).",
+        "Lightning strikes in a national park at a rate of 6 per week during summer. Let T = time (in weeks) between strikes, so T ~ Exp(λ=6). Find P(T > 0.5), the probability of waiting more than half a week.",
         math.exp(-3), 0.005,
         "P(T > 0.5) = e^(−6·0.5) = e⁻³ ≈ 0.0498")
 
     num("Exponential Distribution",
-        "T ~ Exp(6). Given no strike for 2 days (2/7 wk), find P(no strike for 3 more days). Use memoryless property.",
+        "Lightning strikes in a national park at 6 per week, so T ~ Exp(λ=6) in weeks. Given that no strike has occurred for 2 days (2/7 weeks), what is the probability of no strike for 3 more days (3/7 weeks)? Use the memoryless property.",
         math.exp(-18/7), 0.005,
         "Memoryless: P(T > 2/7 + 3/7 | T > 2/7) = P(T > 3/7) = e^(−6·3/7) = e^(−18/7) ≈ 0.0773")
 
@@ -618,7 +618,7 @@ def build_questions():
        "The Exponential CDF is F(t) = 1 − e^(−λt). The pdf is f(t) = λe^(−λt).")
 
     num("Exponential Distribution",
-        "T ~ Exp(λ=10). Find Var(T).",
+        "Customers arrive at a rate of 10 per hour, so the wait time T ~ Exp(λ=10) in hours. Find Var(T).",
         0.01, 0.002,
         "Var(T) = 1/λ² = 1/100 = 0.01")
 
