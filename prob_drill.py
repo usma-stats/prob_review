@@ -759,18 +759,6 @@ st.markdown("""
     div[data-testid="stMetric"] [data-testid="stMetricValue"] {
         color: #e0e0ff !important;
     }
-    .question-card {
-        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-        border-radius: 15px;
-        padding: 25px 30px;
-        margin: 10px 0;
-        border: 1px solid #4a47a3;
-        color: #e0e0ff;
-    }
-    .question-card h3 {
-        color: #bb86fc;
-        margin-bottom: 15px;
-    }
     .correct-banner {
         background: linear-gradient(90deg, #00c853, #00e676);
         color: #000;
@@ -966,40 +954,8 @@ q_num = st.session_state.total_answered + 1
 type_label = {"tf": "True / False", "mc": "Multiple Choice", "num": "Numeric"}[q["type"]]
 st.markdown(f"#### Question {q_num} — {type_label}")
 
-st.markdown(f"""
-<div class="question-card">
-<h3>📝</h3>
-</div>
-""", unsafe_allow_html=True)
-st.markdown(q["text"])
-
-# Built-in calculator
-with st.expander("🧮 Calculator"):
-    calc_col1, calc_col2 = st.columns(2)
-    with calc_col1:
-        calc_expr = st.text_input("Enter expression:", placeholder="e.g. 0.95*0.02/0.117", key="calc_input")
-    with calc_col2:
-        st.markdown("")  # spacer
-        st.markdown("")
-        if calc_expr:
-            try:
-                import re as _re
-                safe = calc_expr
-                # Allow: digits, operators, parens, decimal points, and math functions
-                allowed_names = {
-                    "sqrt": math.sqrt, "exp": math.exp, "log": math.log,
-                    "ln": math.log, "log10": math.log10,
-                    "factorial": math.factorial, "comb": math.comb,
-                    "pi": math.pi, "e": math.e,
-                    "sin": math.sin, "cos": math.cos, "tan": math.tan,
-                    "abs": abs, "pow": pow, "round": round,
-                }
-                result = eval(safe, {"__builtins__": {}}, allowed_names)
-                st.success(f"**= {result:.6g}**")
-            except Exception as ex:
-                st.error(f"Error: {ex}")
-
-    st.caption("Available: `sqrt()`, `exp()`, `log()` (natural), `log10()`, `factorial()`, `comb(n,k)`, `pi`, `e`, `abs()`, `+`, `-`, `*`, `/`, `**` (power)")
+with st.container(border=True):
+    st.markdown(f"📝 &nbsp; {q['text']}")
 
 # Answer input
 if not st.session_state.show_result:
@@ -1079,6 +1035,33 @@ if not st.session_state.show_result:
                 st.session_state.answered_indices.append(q_idx)
                 check_achievements()
                 st.rerun()
+
+# Built-in calculator
+st.markdown("---")
+with st.expander("🧮 Calculator"):
+    calc_col1, calc_col2 = st.columns(2)
+    with calc_col1:
+        calc_expr = st.text_input("Enter expression:", placeholder="e.g. 0.95*0.02/0.117", key="calc_input")
+    with calc_col2:
+        st.markdown("")  # spacer
+        st.markdown("")
+        if calc_expr:
+            try:
+                safe = calc_expr
+                allowed_names = {
+                    "sqrt": math.sqrt, "exp": math.exp, "log": math.log,
+                    "ln": math.log, "log10": math.log10,
+                    "factorial": math.factorial, "comb": math.comb,
+                    "pi": math.pi, "e": math.e,
+                    "sin": math.sin, "cos": math.cos, "tan": math.tan,
+                    "abs": abs, "pow": pow, "round": round,
+                }
+                result = eval(safe, {"__builtins__": {}}, allowed_names)
+                st.success(f"**= {result:.6g}**")
+            except Exception as ex:
+                st.error(f"Error: {ex}")
+
+    st.caption("Available: `sqrt()`, `exp()`, `log()` (natural), `log10()`, `factorial()`, `comb(n,k)`, `pi`, `e`, `abs()`, `+`, `-`, `*`, `/`, `**` (power)")
 
 # Show result
 if st.session_state.show_result:
