@@ -692,6 +692,7 @@ def init_state():
         "q_order": [],
         "user_answer": None,
         "last_name": "",
+        "submitted": False,
     }
     for k, v in defaults.items():
         if k not in st.session_state:
@@ -712,6 +713,22 @@ if not st.session_state.last_name:
                 st.rerun()
             else:
                 st.warning("Please enter your last name.")
+    st.stop()
+
+# ── Submitted screen ─────────────────────────────────────────────────────────
+if st.session_state.submitted:
+    level_name, _, _ = get_level(st.session_state.xp)
+    level_icon = LEVEL_ICONS.get(level_name, "🔰")
+    acc = (st.session_state.total_correct / max(st.session_state.total_answered, 1)) * 100
+    st.markdown("## ✅ Session Submitted!")
+    st.markdown(f"### {level_icon} {level_name} {st.session_state.last_name}")
+    st.markdown(f"""
+- **Answered:** {st.session_state.total_answered}
+- **Correct:** {st.session_state.total_correct} ({acc:.1f}%)
+- **Best Streak:** {st.session_state.best_streak}
+- **XP Earned:** {st.session_state.xp}
+""")
+    st.info("Your progress has been logged. You may close this tab.")
     st.stop()
 
 
@@ -940,6 +957,18 @@ with st.sidebar:
         st.caption("None yet — keep drilling!")
 
     st.markdown("---")
+    if st.button("✅ Submit Session", use_container_width=True, type="primary"):
+        _rank, _, _ = get_level(st.session_state.xp)
+        _acc = (st.session_state.total_correct / max(st.session_state.total_answered, 1)) * 100
+        log_to_sheets(
+            st.session_state.last_name, _rank,
+            f"{_rank} {st.session_state.last_name}",
+            st.session_state.xp, st.session_state.total_answered,
+            st.session_state.total_correct, _acc, st.session_state.best_streak,
+        )
+        st.session_state.submitted = True
+        st.rerun()
+
     if st.button("🔄 Reset Session", use_container_width=True):
         for key in list(st.session_state.keys()):
             del st.session_state[key]
